@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_core/core/services/cache_service.dart';
+import 'package:flutter_core/core/services/download_service.dart';
+import 'package:flutter_core/core/services/language_service.dart';
+import 'package:flutter_core/core/services/location_service.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
@@ -7,10 +11,7 @@ import 'core/storage/local_preferences.dart';
 import 'core/theme/app_theme.dart';
 import 'routes/app_pages.dart';
 import 'routes/app_routes.dart';
-import 'services/cache_service.dart';
-import 'services/download_service.dart';
-import 'services/language_service.dart';
-import 'services/location_service.dart';
+
 
 Future<void> main() async {
 
