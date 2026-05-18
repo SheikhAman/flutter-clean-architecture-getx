@@ -1,34 +1,98 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+
+import 'bindings/initial_binding.dart';
+import 'core/storage/local_preferences.dart';
+import 'core/theme/app_theme.dart';
 import 'routes/app_pages.dart';
 import 'routes/app_routes.dart';
-import 'core/theme/app_theme.dart';
-import 'bindings/initial_binding.dart';
+import 'services/cache_service.dart';
+import 'services/download_service.dart';
+import 'services/language_service.dart';
+import 'services/location_service.dart';
 
-// https://chatgpt.com/c/6a098a8a-2cc0-83ec-b5eb-c4b71bba2bb4
+Future<void> main() async {
 
-void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  /// =========================
+  /// LOCAL STORAGE
+  /// =========================
+  await LocalPreferences.init();
+
+  /// =========================
+  /// GLOBAL SERVICES
+  /// =========================
+  Get.put(LanguageService());
+  Get.put(LocationService());
+  Get.put(CacheService());
+  Get.put(DownloadService());
+
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
+
+    final local = LocalPreferences.to;
+
     return ScreenUtilInit(
+
       designSize: const Size(360, 690),
       minTextAdapt: true,
-      builder: (context, _) =>  GetMaterialApp(
-        title: "App Title",
-        debugShowCheckedModeBanner: false,
-        initialBinding: InitialBinding(),
-        theme: AppTheme.light,
-        darkTheme: AppTheme.dark,
-        initialRoute: AppRoutes.initial,
-        getPages: AppPages.routes,
-      ),
+      splitScreenMode: true,
+
+      builder: (context, child) {
+
+        return Obx(() {
+
+          return GetMaterialApp(
+
+            title: "Flutter Core",
+
+            debugShowCheckedModeBanner: false,
+
+            /// =========================
+            /// BINDING
+            /// =========================
+            initialBinding: InitialBinding(),
+
+            /// =========================
+            /// THEME
+            /// =========================
+            theme: AppTheme.light,
+            darkTheme: AppTheme.dark,
+
+            themeMode: local.isDarkMode.value
+                ? ThemeMode.dark
+                : ThemeMode.light,
+
+            /// =========================
+            /// LANGUAGE
+            /// =========================
+            locale: local.isEnglish.value
+                ? const Locale('en', 'US')
+                : const Locale('bn', 'BD'),
+
+            fallbackLocale: const Locale(
+              'en',
+              'US',
+            ),
+
+            /// =========================
+            /// ROUTES
+            /// =========================
+            initialRoute: AppRoutes.initial,
+            getPages: AppPages.routes,
+
+          );
+        });
+      },
     );
   }
 }

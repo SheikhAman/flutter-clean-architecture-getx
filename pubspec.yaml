@@ -17,6 +17,8 @@ dependencies:
   flutter_screenutil: ^5.9.3
   get_storage: ^2.1.1
   connectivity_plus: ^7.1.1
+  dio: ^5.9.2
+  geolocator: ^14.0.2
 
 dev_dependencies:
   flutter_test:
