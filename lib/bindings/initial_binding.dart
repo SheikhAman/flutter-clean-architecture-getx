@@ -1,8 +1,9 @@
 import 'package:get/get.dart';
+import 'network_binding.dart';
 
 class InitialBinding extends Bindings {
   @override
   void dependencies() {
-    // global dependencies will go here
+    NetworkBinding().dependencies();
   }
 }
