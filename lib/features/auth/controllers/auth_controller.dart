@@ -25,6 +25,7 @@ class AuthController extends GetxController {
 
       AppSnackbar.success("Login successful");
     } catch (e) {
+      
       AppSnackbar.error(e.toString());
     } finally {
       isLoading.value = false;
