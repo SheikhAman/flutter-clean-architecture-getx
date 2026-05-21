@@ -1,19 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_core/core/utils/app_toast.dart';
 
+/// Backward-compatible loader — delegates to EasyLoading.
 class Loading {
-  static void show() {
-    Get.dialog(
-      const Center(
-        child: CircularProgressIndicator(),
-      ),
-      barrierDismissible: false,
-    );
-  }
+  static void show([String? message]) => AppToast.showLoading(message);
 
-  static void hide() {
-    if (Get.isDialogOpen ?? false) {
-      Get.back();
-    }
-  }
+  static void hide() => AppToast.dismiss();
 }

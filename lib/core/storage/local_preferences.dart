@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_core/core/theme/app_colors.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -37,6 +38,9 @@ class LocalPreferences extends GetxService {
 
   final isDarkMode = false.obs;
   final isEnglish = true.obs;
+  final primaryColorIndex = 0.obs;
+
+  Color get primaryColor => AppColors.seedAt(primaryColorIndex.value);
   final isOnBoardingSeen = false.obs;
   final isRememberMe = false.obs;
 
@@ -55,6 +59,7 @@ class LocalPreferences extends GetxService {
   static const _imageKey = 'image';
 
   static const _darkModeKey = 'dark_mode';
+  static const _primaryColorKey = 'primary_color_index';
   static const _languageKey = 'language';
   static const _onBoardingKey = 'on_boarding';
   static const _rememberMeKey = 'remember_me';
@@ -81,6 +86,7 @@ class LocalPreferences extends GetxService {
     image.value = _box.read(_imageKey) ?? '';
 
     isDarkMode.value = _box.read(_darkModeKey) ?? false;
+    primaryColorIndex.value = _box.read(_primaryColorKey) ?? 0;
     isEnglish.value = _box.read(_languageKey) ?? true;
     isOnBoardingSeen.value = _box.read(_onBoardingKey) ?? false;
     isRememberMe.value = _box.read(_rememberMeKey) ?? false;
@@ -157,19 +163,17 @@ class LocalPreferences extends GetxService {
   // =========================
 
   Future<void> toggleTheme() async {
-
     isDarkMode.value = !isDarkMode.value;
-
-    await _box.write(
-      _darkModeKey,
-      isDarkMode.value,
-    );
-
+    await _box.write(_darkModeKey, isDarkMode.value);
     Get.changeThemeMode(
-      isDarkMode.value
-          ? ThemeMode.dark
-          : ThemeMode.light,
+      isDarkMode.value ? ThemeMode.dark : ThemeMode.light,
     );
+  }
+
+  Future<void> setPrimaryColorIndex(int index) async {
+    primaryColorIndex.value = index % AppColors.seeds.length;
+    await _box.write(_primaryColorKey, primaryColorIndex.value);
+    Get.forceAppUpdate();
   }
 
   // =========================

@@ -1,8 +1,11 @@
-class ApiConstants {
-  static const String baseUrl = "https://api.example.com";
+import 'package:flutter_core/core/constants/app_constants.dart';
 
-  // Endpoints
-  static const String login = "/login";
-  static const String register = "/register";
-  static const String users = "/users";
+class ApiConstants {
+  ApiConstants._();
+
+  static const String baseUrl = AppConstants.dummyApiBase;
+
+  static const String postById = '/posts/1';
+  static const String posts = '/posts';
+  static const String multipartDemo = AppConstants.multipartDemoUrl;
 }

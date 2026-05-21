@@ -1,37 +1,11 @@
-import 'package:flutter_core/network/api_client.dart';
 import 'package:flutter_core/network/api_service.dart';
+import 'package:flutter_core/network/dio_client.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 
 class NetworkBinding extends Bindings {
   @override
   void dependencies() {
-    /// =========================
-    /// HTTP CLIENT
-    /// =========================
-    Get.lazyPut<http.Client>(
-      () => http.Client(),
-      fenix: true,
-    );
-
-    /// =========================
-    /// API CLIENT
-    /// =========================
-    Get.lazyPut<ApiClient>(
-      () => ApiClient(
-        client: Get.find(),
-      ),
-      fenix: true,
-    );
-
-    /// =========================
-    /// API SERVICE
-    /// =========================
-    Get.lazyPut<ApiService>(
-      () => ApiService(
-        Get.find<ApiClient>(),
-      ),
-      fenix: true,
-    );
+    Get.lazyPut<DioClient>(() => DioClient(), fenix: true);
+    Get.lazyPut<ApiService>(() => ApiService(Get.find()), fenix: true);
   }
 }
