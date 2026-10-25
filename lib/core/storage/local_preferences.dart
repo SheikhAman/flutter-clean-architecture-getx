@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 class LocalPreferences extends GetxService {
-
   static LocalPreferences get to => Get.find();
 
   final GetStorage _box = GetStorage();
@@ -120,7 +119,6 @@ class LocalPreferences extends GetxService {
     required String userPhone,
     String userImage = '',
   }) async {
-
     userId.value = id;
     name.value = fullName;
     email.value = userEmail;
@@ -139,7 +137,6 @@ class LocalPreferences extends GetxService {
   // =========================
 
   Future<void> toggleLanguage() async {
-
     isEnglish.value = !isEnglish.value;
 
     await _box.write(
@@ -181,7 +178,6 @@ class LocalPreferences extends GetxService {
   // =========================
 
   Future<void> setOnBoardingSeen() async {
-
     isOnBoardingSeen.value = true;
 
     await _box.write(
@@ -195,7 +191,6 @@ class LocalPreferences extends GetxService {
   // =========================
 
   Future<void> setRememberMe(bool value) async {
-
     isRememberMe.value = value;
 
     await _box.write(
@@ -209,7 +204,6 @@ class LocalPreferences extends GetxService {
   // =========================
 
   Future<void> logout() async {
-
     token.value = '';
     refreshToken.value = '';
     isLoggedIn.value = false;
@@ -224,7 +218,6 @@ class LocalPreferences extends GetxService {
   // =========================
 
   Future<void> clearAll() async {
-
     await _box.erase();
 
     loadData();

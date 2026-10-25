@@ -96,7 +96,8 @@ class AuthController extends GetxController {
     }
 
     final prefs = LocalPreferences.to;
-    await prefs.saveToken('demo_token_${DateTime.now().millisecondsSinceEpoch}');
+    await prefs
+        .saveToken('demo_token_${DateTime.now().millisecondsSinceEpoch}');
     await prefs.saveUser(
       id: '1',
       fullName: prefs.name.value.isNotEmpty ? prefs.name.value : 'Demo User',

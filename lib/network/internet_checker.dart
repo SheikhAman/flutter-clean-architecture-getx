@@ -12,8 +12,7 @@ class InternetChecker {
 
       final result = await InternetAddress.lookup('google.com');
 
-      return result.isNotEmpty &&
-          result.first.rawAddress.isNotEmpty;
+      return result.isNotEmpty && result.first.rawAddress.isNotEmpty;
     } on SocketException {
       return false;
     }

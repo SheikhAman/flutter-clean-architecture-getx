@@ -4,7 +4,6 @@ import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 
 class DownloadService extends GetxService {
-
   final Dio _dio = Dio();
 
   Future<void> downloadFile({
@@ -12,22 +11,16 @@ class DownloadService extends GetxService {
     required String savePath,
     Function(double progress)? onProgress,
   }) async {
-
     try {
-
       await _dio.download(
         url,
         savePath,
-
         onReceiveProgress: (
-            received,
-            total,
-            ) {
-
+          received,
+          total,
+        ) {
           if (total != -1) {
-
-            final progress =
-                received / total;
+            final progress = received / total;
 
             if (onProgress != null) {
               onProgress(progress);
@@ -35,15 +28,11 @@ class DownloadService extends GetxService {
           }
         },
       );
-
     } on DioException catch (e) {
-
       throw Exception(
-        e.message ??
-            'Download failed',
+        e.message ?? 'Download failed',
       );
     } catch (e) {
-
       throw Exception(
         'Something went wrong',
       );
@@ -51,16 +40,14 @@ class DownloadService extends GetxService {
   }
 
   Future<bool> fileExists(
-      String path,
-      ) async {
-
+    String path,
+  ) async {
     return File(path).existsSync();
   }
 
   Future<void> deleteFile(
-      String path,
-      ) async {
-
+    String path,
+  ) async {
     final file = File(path);
 
     if (file.existsSync()) {

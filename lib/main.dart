@@ -8,6 +8,7 @@ import 'package:flutter_core/core/services/language_service.dart';
 import 'package:flutter_core/core/services/location_service.dart';
 import 'package:flutter_core/core/storage/local_preferences.dart';
 import 'package:flutter_core/core/theme/theme_controller.dart';
+import 'package:flutter_core/features/common/screens/unknown_route_screen.dart';
 import 'package:flutter_core/languages/app_translations.dart';
 import 'package:flutter_core/routes/app_pages.dart';
 import 'package:flutter_core/routes/app_routes.dart';
@@ -86,11 +87,14 @@ class MyApp extends StatelessWidget {
                 prefs.isDarkMode.value ? ThemeMode.dark : ThemeMode.light,
             initialRoute: AppRoutes.initial,
             getPages: AppPages.routes,
+            unknownRoute: GetPage(
+              name: '/not-found',
+              page: () => const UnknownRouteScreen(),
+            ),
             builder: EasyLoading.init(
               builder: (context, widget) {
                 return GestureDetector(
-                  onTap: () =>
-                      FocusManager.instance.primaryFocus?.unfocus(),
+                  onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
                   child: widget ?? const SizedBox(),
                 );
               },
