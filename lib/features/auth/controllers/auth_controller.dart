@@ -1,18 +1,28 @@
 import 'package:flutter_core/core/constants/app_constants.dart';
 import 'package:flutter_core/core/storage/local_preferences.dart';
 import 'package:flutter_core/core/utils/app_toast.dart';
+import 'package:flutter_core/features/auth/domain/usecases/login_usecase.dart';
+import 'package:flutter_core/features/auth/domain/usecases/register_usecase.dart';
+import 'package:flutter_core/features/auth/domain/usecases/verify_otp_usecase.dart';
 import 'package:flutter_core/routes/app_routes.dart';
 import 'package:get/get.dart';
-import '../repositories/auth_repository.dart';
 
 class AuthController extends GetxController {
-  final AuthRepository repository;
+  final LoginUseCase loginUseCase;
+  final RegisterUseCase registerUseCase;
+  final VerifyOtpUseCase verifyOtpUseCase;
 
-  AuthController(this.repository);
+  AuthController({
+    required this.loginUseCase,
+    required this.registerUseCase,
+    required this.verifyOtpUseCase,
+  });
 
   final isLoading = false.obs;
+  final isOtpVerifying = false.obs;
   final pendingPhone = ''.obs;
   final pendingEmail = ''.obs;
+  final otpError = ''.obs;
 
   Future<void> login({
     required String email,
@@ -22,7 +32,7 @@ class AuthController extends GetxController {
       isLoading.value = true;
       AppToast.showLoading();
 
-      final user = await repository.login(
+      final user = await loginUseCase(
         email: email,
         password: password,
       );
@@ -59,7 +69,7 @@ class AuthController extends GetxController {
       isLoading.value = true;
       AppToast.showLoading();
 
-      final user = await repository.register(
+      final user = await registerUseCase(
         name: name,
         email: email,
         phone: phone,
@@ -89,29 +99,47 @@ class AuthController extends GetxController {
     }
   }
 
-  Future<void> verifyOtp(String code) async {
-    if (code.trim() != AppConstants.demoOtp) {
-      AppToast.error('Invalid OTP. Use ${AppConstants.demoOtp} for demo.');
-      return;
+  Future<bool> verifyOtp(String code) async {
+    try {
+      isOtpVerifying.value = true;
+      otpError.value = '';
+
+      final isValid = await verifyOtpUseCase(
+        code: code,
+        email: pendingEmail.value,
+      );
+
+      if (!isValid) {
+        otpError.value = 'Invalid OTP. Use ${AppConstants.demoOtp} for demo.';
+        AppToast.error(otpError.value);
+        return false;
+      }
+
+      final prefs = LocalPreferences.to;
+      await prefs.saveToken('demo_token_${DateTime.now().millisecondsSinceEpoch}');
+      await prefs.saveUser(
+        id: prefs.userId.value.isNotEmpty ? prefs.userId.value : '1',
+        fullName: prefs.name.value.isNotEmpty ? prefs.name.value : 'Demo User',
+        userEmail: pendingEmail.value.isNotEmpty
+            ? pendingEmail.value
+            : 'demo@fluttercore.dev',
+        userPhone: pendingPhone.value,
+      );
+
+      AppToast.success('success'.tr);
+      Get.offAllNamed(AppRoutes.showcase);
+      return true;
+    } catch (e) {
+      otpError.value = e.toString();
+      AppToast.error(e.toString());
+      return false;
+    } finally {
+      isOtpVerifying.value = false;
     }
-
-    final prefs = LocalPreferences.to;
-    await prefs
-        .saveToken('demo_token_${DateTime.now().millisecondsSinceEpoch}');
-    await prefs.saveUser(
-      id: '1',
-      fullName: prefs.name.value.isNotEmpty ? prefs.name.value : 'Demo User',
-      userEmail: pendingEmail.value.isNotEmpty
-          ? pendingEmail.value
-          : 'demo@fluttercore.dev',
-      userPhone: pendingPhone.value,
-    );
-
-    AppToast.success('success'.tr);
-    Get.offAllNamed(AppRoutes.showcase);
   }
 
   void resendOtp() {
+    otpError.value = '';
     AppToast.info('demo_otp_hint'.tr);
   }
 }

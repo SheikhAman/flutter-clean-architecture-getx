@@ -1,8 +1,11 @@
+import 'package:flutter_core/core/constants/app_constants.dart';
 import 'package:flutter_core/core/services/device_info_service.dart';
 import 'package:flutter_core/network/api_service.dart';
+import '../domain/entities/user_entity.dart';
+import '../domain/repositories/i_auth_repository.dart';
 import '../models/user_model.dart';
 
-class AuthRepository {
+class AuthRepository implements IAuthRepository {
   final ApiService apiService;
   final DeviceInfoService deviceInfo;
 
@@ -11,8 +14,8 @@ class AuthRepository {
     required this.deviceInfo,
   });
 
-  /// Demo login — hits JSONPlaceholder POST and attaches device payload.
-  Future<UserModel> login({
+  @override
+  Future<UserEntity> login({
     required String email,
     required String password,
   }) async {
@@ -33,7 +36,8 @@ class AuthRepository {
     });
   }
 
-  Future<UserModel> register({
+  @override
+  Future<UserEntity> register({
     required String name,
     required String email,
     required String phone,
@@ -56,5 +60,13 @@ class AuthRepository {
       'email': email,
       'phone': phone,
     });
+  }
+
+  @override
+  Future<bool> verifyOtp({
+    required String code,
+    String? email,
+  }) async {
+    return code.trim() == AppConstants.demoOtp;
   }
 }
