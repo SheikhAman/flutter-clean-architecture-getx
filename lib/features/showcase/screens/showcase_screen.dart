@@ -133,6 +133,23 @@ class ShowcaseScreen extends StatelessWidget {
             SizedBox(height: 16.h),
             _buildSectionHeader(
               context,
+              title: 'Clean Architecture Feature',
+              subtitle: 'Full 3-layer module: presentation, domain, and data',
+              icon: Icons.layers_outlined,
+            ),
+            SizedBox(height: 8.h),
+            _buildShowcaseCard(
+              context,
+              title: 'Posts Dashboard',
+              subtitle:
+                  'List, detail, and post creation wired through use cases',
+              icon: Icons.article_outlined,
+              badgeColor: Colors.deepPurple,
+              route: AppRoutes.posts,
+            ),
+            SizedBox(height: 16.h),
+            _buildSectionHeader(
+              context,
               title: 'App Utilities & States',
               subtitle: 'Fallbacks, error states, and embedded browser',
               icon: Icons.phonelink_setup_outlined,

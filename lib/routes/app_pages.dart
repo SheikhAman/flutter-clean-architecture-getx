@@ -5,6 +5,9 @@ import 'package:flutter_core/features/auth/screens/register_screen.dart';
 import 'package:flutter_core/features/common/screens/empty_demo_screen.dart';
 import 'package:flutter_core/features/common/screens/network_error_screen.dart';
 import 'package:flutter_core/features/common/screens/webview_screen.dart';
+import 'package:flutter_core/features/posts/bindings/post_binding.dart';
+import 'package:flutter_core/features/posts/screens/post_detail_screen.dart';
+import 'package:flutter_core/features/posts/screens/post_list_screen.dart';
 import 'package:flutter_core/features/showcase/bindings/showcase_binding.dart';
 import 'package:flutter_core/features/showcase/screens/api_demo_screen.dart';
 import 'package:flutter_core/features/showcase/screens/download_demo_screen.dart';
@@ -84,6 +87,17 @@ class AppPages {
     GetPage(
       name: AppRoutes.emptyDemo,
       page: () => const EmptyDemoScreen(),
+      transition: Transition.cupertino,
+    ),
+    GetPage(
+      name: AppRoutes.posts,
+      page: () => const PostListScreen(),
+      binding: PostBinding(),
+      transition: Transition.cupertino,
+    ),
+    GetPage(
+      name: AppRoutes.postDetail,
+      page: () => const PostDetailScreen(),
       transition: Transition.cupertino,
     ),
   ];

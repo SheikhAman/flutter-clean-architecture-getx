@@ -17,6 +17,8 @@ class AppRoutes {
   static const String webview = '/webview';
   static const String noInternet = '/no-internet';
 
+  static const String posts = '/posts';
+  static const String postDetail = '/posts/detail';
   static const String dashboard = '/dashboard';
   static const String home = '/home';
   static const String profile = '/profile';
