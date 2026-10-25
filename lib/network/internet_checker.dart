@@ -6,7 +6,7 @@ class InternetChecker {
     try {
       final connectivity = await Connectivity().checkConnectivity();
 
-      if (connectivity == ConnectivityResult.none) {
+      if (connectivity.contains(ConnectivityResult.none)) {
         return false;
       }
 
